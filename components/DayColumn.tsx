@@ -148,20 +148,20 @@ export default function DayColumn({
               value={text}
               onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-              className="w-full text-sm text-white bg-white/10 placeholder-white/30 border border-white/20 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-400/50"
+              className="w-full text-sm text-white bg-white/25 placeholder-white/50 border border-white/40 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-400"
               autoFocus
             />
             <input
               type="date"
               value={scheduledDate}
               onChange={(e) => setScheduledDate(e.target.value)}
-              className="w-full text-sm text-white/70 bg-white/10 border border-white/20 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-400/50"
+              className="w-full text-sm text-white bg-white/25 border border-white/40 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-400"
             />
             {isToday && (
               <button
                 type="button"
                 onClick={() => setScheduledDate(getTodayISO())}
-                className="w-full text-xs font-semibold text-red-400 bg-red-900/30 hover:bg-red-900/50 border border-red-700/50 py-1.5 rounded-lg transition-colors"
+                className="w-full text-xs font-bold text-red-300 bg-red-800/70 hover:bg-red-700/80 border border-red-500 py-1.5 rounded-lg transition-colors"
               >
                 Due Today
               </button>
@@ -175,7 +175,7 @@ export default function DayColumn({
               </button>
               <button
                 onClick={() => { setShowForm(false); setText(""); setScheduledDate(isoDate); }}
-                className="flex-1 bg-white/10 hover:bg-white/20 text-white/60 text-xs font-medium py-1.5 rounded-lg transition-colors"
+                className="flex-1 bg-white/30 hover:bg-white/40 text-white text-xs font-medium py-1.5 rounded-lg transition-colors"
               >
                 Cancel
               </button>
