@@ -184,7 +184,7 @@ export default function DayColumn({
         ) : isToday ? (
           <button
             onClick={openForm}
-            className="w-full text-xs py-1.5 rounded-lg transition-colors text-teal-400/70 hover:text-teal-300 hover:bg-teal-400/10"
+            className="w-full text-sm font-semibold py-2 rounded-lg transition-colors text-teal-300 bg-teal-500/25 hover:bg-teal-500/40 border border-teal-400/50"
           >
             + Add task
           </button>
