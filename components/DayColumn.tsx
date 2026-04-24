@@ -8,6 +8,8 @@ type Props = {
   dayName: string;
   displayDate: string;
   isToday: boolean;
+  isExpanded: boolean;
+  onSelect: () => void;
   characterImage?: string;
   tasks: Task[];
   onAddTask: (text: string, date: string) => void;
@@ -20,6 +22,8 @@ export default function DayColumn({
   dayName,
   displayDate,
   isToday,
+  isExpanded,
+  onSelect,
   characterImage,
   tasks,
   onAddTask,
@@ -50,10 +54,11 @@ export default function DayColumn({
     <div
       id={`day-col-${isoDate}`}
       style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
-      className={`rounded-xl flex flex-col transition-all relative overflow-hidden ${
-        isToday
+      onClick={onSelect}
+      className={`rounded-xl flex flex-col transition-all relative overflow-hidden cursor-pointer ${
+        isExpanded
           ? "bg-black/70 border-2 border-teal-400 shadow-[0_0_24px_rgba(45,212,191,0.25)] min-h-[620px] flex-[2] min-w-[220px]"
-          : "bg-black/40 border border-white/10 shadow-lg min-h-[520px] flex-1 min-w-[160px]"
+          : "bg-black/40 border border-white/10 shadow-lg min-h-[400px] flex-1 min-w-[130px]"
       }`}
     >
       {/* Character background */}
@@ -63,17 +68,17 @@ export default function DayColumn({
             src={characterImage}
             alt=""
             className="w-full h-full object-cover object-top"
-            style={{ opacity: isToday ? 0.18 : 0.1, mixBlendMode: "luminosity" }}
+            style={{ opacity: isExpanded ? 0.18 : 0.08, mixBlendMode: "luminosity" }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
         </div>
       )}
 
       {/* Header */}
-      <div className={`px-4 py-4 border-b ${isToday ? "border-teal-400/30" : "border-white/10"}`}>
+      <div className={`px-4 py-4 border-b ${isExpanded ? "border-teal-400/30" : "border-white/10"}`}>
         <div className="flex items-center justify-between">
           <div>
-            <h2 className={`font-bold ${isToday ? "text-teal-300 text-base" : "text-white/80 text-sm"}`}>
+            <h2 className={`font-bold ${isExpanded ? "text-teal-300 text-base" : "text-white/60 text-sm"}`}>
               {dayName}
               {isToday && (
                 <span className="ml-2 text-xs font-semibold bg-teal-400 text-black px-2 py-0.5 rounded-full">
@@ -81,12 +86,12 @@ export default function DayColumn({
                 </span>
               )}
             </h2>
-            <p className={`text-xs mt-0.5 ${isToday ? "text-teal-400/60" : "text-white/40"}`}>
+            <p className={`text-xs mt-0.5 ${isExpanded ? "text-teal-400/60" : "text-white/30"}`}>
               {displayDate}
             </p>
           </div>
           {tasks.length > 0 && (
-            <span className={`text-xs ${isToday ? "text-teal-400/70" : "text-white/40"}`}>
+            <span className={`text-xs ${isExpanded ? "text-teal-400/70" : "text-white/30"}`}>
               {completed}/{tasks.length}
             </span>
           )}
@@ -94,13 +99,14 @@ export default function DayColumn({
       </div>
 
       {/* Tasks */}
-      <div className={`flex-1 py-2 space-y-2 overflow-y-auto ${isToday ? "px-4" : "px-3"}`}>
+      <div className={`flex-1 py-2 space-y-2 overflow-y-auto ${isExpanded ? "px-4" : "px-3"}`}>
         {tasks.length === 0 && (
           <p className="text-xs text-center mt-8 text-white/20">No tasks</p>
         )}
         {tasks.map((task) => (
           <div
             key={task.id}
+            onClick={(e) => e.stopPropagation()}
             className={`flex items-start gap-2 p-2 rounded-lg group transition-colors ${
               task.completed
                 ? "bg-white/5"
@@ -139,7 +145,7 @@ export default function DayColumn({
       </div>
 
       {/* Add task form */}
-      <div className={`py-3 border-t ${isToday ? "px-4 border-teal-400/20" : "px-3 border-white/10"}`}>
+      <div onClick={(e) => e.stopPropagation()} className={`py-3 border-t ${isExpanded ? "px-4 border-teal-400/20" : "px-3 border-white/10"}`}>
         {showForm ? (
           <div className="space-y-2">
             <input
@@ -181,7 +187,7 @@ export default function DayColumn({
               </button>
             </div>
           </div>
-        ) : isToday ? (
+        ) : isExpanded ? (
           <button
             onClick={openForm}
             className="w-full text-sm font-semibold py-2 rounded-lg transition-colors text-teal-300 bg-teal-500/25 hover:bg-teal-500/40 border border-teal-400/50"

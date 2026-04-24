@@ -24,6 +24,7 @@ const DAY_IMAGES: Record<string, string> = {
 export default function WeeklyPlanner() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [ready, setReady] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(getTodayISO());
 
   useEffect(() => {
     setTasks(storage.loadTasks());
@@ -65,6 +66,8 @@ export default function WeeklyPlanner() {
           dayName={getDayName(isoDate)}
           displayDate={formatDate(isoDate)}
           isToday={isoDate === today}
+          isExpanded={isoDate === selectedDate}
+          onSelect={() => setSelectedDate(isoDate)}
           characterImage={DAY_IMAGES[getDayName(isoDate)]}
           tasks={tasks.filter((t) => t.date === isoDate)}
           onAddTask={(text, date) => addTask(text, date)}
