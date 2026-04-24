@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import WeeklyPlanner from "@/components/WeeklyPlanner";
 import Calendar from "@/components/Calendar";
+import NotificationBanner from "@/components/NotificationBanner";
 import { getTodayISO } from "@/lib/storage";
 
 export default function Home() {
@@ -28,6 +29,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen py-8 px-4">
+      <NotificationBanner />
       <div className="flex items-center justify-between max-w-screen-2xl mx-auto mb-8">
         <img src="/logo.png" alt="Logo" className="h-28 w-auto object-contain" />
         <Link
