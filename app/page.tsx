@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <main className="min-h-screen py-8 px-4">
       <div className="flex items-center justify-between max-w-screen-2xl mx-auto mb-8">
-        <img src={`/logo.png?v=${Date.now()}`} alt="Logo" className="h-28 w-auto object-contain" />
+        <img src="/logo.png" alt="Logo" className="h-28 w-auto object-contain" />
         <Link
           href="/old-tasks"
           className="bg-black/50 hover:bg-black/70 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors border border-white/20 backdrop-blur-sm"
