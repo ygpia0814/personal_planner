@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Task, getTodayISO } from "@/lib/storage";
+import CelebrationOverlay from "./CelebrationOverlay";
 
 type Props = {
   isoDate: string;
@@ -33,6 +34,7 @@ export default function DayColumn({
   const [text, setText] = useState("");
   const [scheduledDate, setScheduledDate] = useState(isoDate);
   const [showForm, setShowForm] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   function handleAdd() {
     const trimmed = text.trim();
@@ -51,6 +53,10 @@ export default function DayColumn({
   const completed = tasks.filter((t) => t.completed).length;
 
   return (
+    <>
+      {showCelebration && (
+        <CelebrationOverlay onDone={() => setShowCelebration(false)} />
+      )}
     <div
       id={`day-col-${isoDate}`}
       style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
@@ -116,7 +122,13 @@ export default function DayColumn({
             <input
               type="checkbox"
               checked={task.completed}
-              onChange={() => onToggleTask(task.id)}
+              onChange={() => {
+                if (isToday && !task.completed) {
+                  const remaining = tasks.filter((t) => !t.completed && t.id !== task.id);
+                  if (remaining.length === 0) setShowCelebration(true);
+                }
+                onToggleTask(task.id);
+              }}
               className="mt-0.5 accent-teal-400 cursor-pointer shrink-0"
             />
             <div className="flex-1 min-w-0">
@@ -154,20 +166,20 @@ export default function DayColumn({
               value={text}
               onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-              className="w-full text-sm text-white bg-white/25 placeholder-white/50 border border-white/40 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-400"
+              className="w-full text-sm text-white bg-zinc-700 placeholder-zinc-400 border border-zinc-500 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-400"
               autoFocus
             />
             <input
               type="date"
               value={scheduledDate}
               onChange={(e) => setScheduledDate(e.target.value)}
-              className="w-full text-sm text-white bg-white/25 border border-white/40 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-400"
+              className="w-full text-sm text-white bg-zinc-700 border border-zinc-500 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-400"
             />
             {isToday && (
               <button
                 type="button"
                 onClick={() => setScheduledDate(getTodayISO())}
-                className="w-full text-xs font-bold text-red-300 bg-red-800/70 hover:bg-red-700/80 border border-red-500 py-1.5 rounded-lg transition-colors"
+                className="w-full text-sm font-bold text-white bg-red-600 hover:bg-red-500 border border-red-400 py-2 rounded-lg transition-colors"
               >
                 Due Today
               </button>
@@ -175,13 +187,13 @@ export default function DayColumn({
             <div className="flex gap-2">
               <button
                 onClick={handleAdd}
-                className="flex-1 bg-teal-500 hover:bg-teal-400 text-black text-xs font-bold py-1.5 rounded-lg transition-colors"
+                className="flex-1 bg-teal-500 hover:bg-teal-400 text-black text-sm font-bold py-2 rounded-lg transition-colors"
               >
                 Add
               </button>
               <button
                 onClick={() => { setShowForm(false); setText(""); setScheduledDate(isoDate); }}
-                className="flex-1 bg-white/30 hover:bg-white/40 text-white text-xs font-medium py-1.5 rounded-lg transition-colors"
+                className="flex-1 bg-zinc-600 hover:bg-zinc-500 text-white text-sm font-medium py-2 rounded-lg transition-colors"
               >
                 Cancel
               </button>
@@ -197,5 +209,6 @@ export default function DayColumn({
         ) : null}
       </div>
     </div>
+    </>
   );
 }
